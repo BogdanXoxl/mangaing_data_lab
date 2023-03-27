@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model drivers {
+  id       Decimal   @id @db.Decimal
+  name     String
+  birthday DateTime  @db.Date
+  phone    String
+  sex      sex
+  salary   Int       @default(0) @db.SmallInt
+  exp      Int       @default(0) @db.SmallInt
+  tickets  tickets[]
+}
+
+model passengers {
+  id       Decimal   @id @db.Decimal
+  name     String
+  passport BigInt
+  tickets  tickets[]
+}
+
+model schedule {
+  id         Int      @id @default(autoincrement())
+  station_id Decimal  @db.Decimal
+  train_id   Decimal  @db.Decimal
+  pause      Int      @default(0) @db.SmallInt
+  start_time DateTime @default(now()) @db.Time(6)
+  duration   Int      @default(0) @db.SmallInt
+  stations   stations @relation(fields: [station_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "schedule_station_code_fkey")
+  trains     trains   @relation(fields: [train_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "schedule_train_code_fkey")
+}
+
+model stations {
+  id           Decimal    @id @db.Decimal
+  name         String
+  distance     Int        @default(0) @db.SmallInt
+  station_form String
+  schedule     schedule[]
+}
+
+model tickets {
+  id           Decimal    @id @db.Decimal
+  passenger_id Decimal    @db.Decimal
+  train_id     Decimal    @db.Decimal
+  car_code     Decimal    @db.Decimal
+  date         DateTime   @default(now()) @db.Date
+  driver_id    Decimal    @db.Decimal
+  drivers      drivers    @relation(fields: [driver_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_driver_code_fkey")
+  passengers   passengers @relation(fields: [passenger_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_passenger_code_fkey")
+  trains       trains     @relation(fields: [train_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_train_code_fkey")
+}
+
+model trains {
+  id          Decimal    @id @db.Decimal
+  destination String
+  time        DateTime   @default(now()) @db.Time(6)
+  schedule    schedule[]
+  tickets     tickets[]
+}
+
+enum sex {
+  m
+  w
+}
