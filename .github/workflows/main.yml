@@ -82,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - if: ${{GITHUB_REF_NAME}}
-        run: echo ${{GITHUB_REF_NAME}}
+        run: echo ${{GITHUB_REF}}
       - name: Install Vercel CLI
         run: yarn global add vercel@canary
       - name: Pull Vercel Environment Information
