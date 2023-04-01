@@ -13,6 +13,7 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+      - run: echo ${GITHUB_REF##*/}
       - name: Checkout Commit
         uses: actions/checkout@v3
       - name: Cache yarn dependencies
@@ -81,8 +82,6 @@ jobs:
     needs: [lint, build]
     steps:
       - uses: actions/checkout@v2
-      - if: ${GITHUB_REF}
-        run: echo ${GITHUB_REF}
       - name: Install Vercel CLI
         run: yarn global add vercel@canary
       - name: Pull Vercel Environment Information
