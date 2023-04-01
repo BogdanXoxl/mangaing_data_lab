@@ -81,7 +81,7 @@ jobs:
     needs: [lint, build]
     steps:
       - uses: actions/checkout@v2
-      - if: ${{GITHUB_REF_NAME}}
+      - if: ${{GITHUB_REF}}
         run: echo ${{GITHUB_REF}}
       - name: Install Vercel CLI
         run: yarn global add vercel@canary
