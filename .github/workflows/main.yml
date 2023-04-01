@@ -4,10 +4,7 @@ env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [$default-branch, test]
+on: [workflow_dispatch, push]
 
 jobs:
   install-cache:
@@ -84,6 +81,8 @@ jobs:
     needs: [lint, build]
     steps:
       - uses: actions/checkout@v2
+      - if: ${{GITHUB_REF_NAME}}
+        run: echo ${{GITHUB_REF_NAME}}
       - name: Install Vercel CLI
         run: yarn global add vercel@canary
       - name: Pull Vercel Environment Information
