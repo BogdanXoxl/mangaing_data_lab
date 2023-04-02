@@ -21,6 +21,7 @@ jobs:
         run: |
           if ${{github.ref_name == 'main'}};then
             echo "Yes"
+            echo "Yes Yes"
           else
             echo "No"
           fi
