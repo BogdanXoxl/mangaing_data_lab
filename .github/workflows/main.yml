@@ -17,11 +17,10 @@ jobs:
         if: ${{github.ref_name == 'main'}}
         run: echo "It's working"
         
-      - run: |
+      - name: Test
+        run: |
           if ${{github.ref_name == 'main'}};then
             echo "Yes"
-            echo "Yes Yes"
-            # do our things
           else
             echo "No
           fi
