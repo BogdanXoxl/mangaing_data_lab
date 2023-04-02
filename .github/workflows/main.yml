@@ -16,6 +16,14 @@ jobs:
       - name: CHECK
         if: ${{github.ref_name == 'main'}}
         run: echo "It's working"
+      - name: Print if not already present or merged
+        run: |
+          if ${{github.ref_name == 'main'}};then
+            echo "Branch not found"
+            # do our things
+          else
+            echo "Branch found"
+          
       - name: Checkout Commit
         uses: actions/checkout@v3
       - name: Cache yarn dependencies
