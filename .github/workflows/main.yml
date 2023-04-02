@@ -84,8 +84,7 @@ jobs:
       - name: Install Vercel CLI
         run: yarn global add vercel@canary
         
-      - name: Pull Vercel Environment Information
-      - name: Test
+      - name: Deploy to vercel
         run: |
           if ${{github.ref_name == 'main'}};then
             vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
