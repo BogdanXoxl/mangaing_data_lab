@@ -23,6 +23,7 @@ jobs:
             # do our things
           else
             echo "Branch found"
+          fi
           
       - name: Checkout Commit
         uses: actions/checkout@v3
