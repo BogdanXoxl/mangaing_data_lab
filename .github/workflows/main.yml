@@ -22,7 +22,7 @@ jobs:
           if ${{github.ref_name == 'main'}};then
             echo "Yes"
           else
-            echo "No
+            echo "No"
           fi
       - name: Checkout Commit
         uses: actions/checkout@v3
