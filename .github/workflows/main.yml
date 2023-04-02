@@ -13,18 +13,6 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
-      - name: CHECK
-        if: ${{github.ref_name == 'main'}}
-        run: echo "It's working"
-        
-      - name: Test
-        run: |
-          if ${{github.ref_name == 'main'}};then
-            echo "Yes"
-            echo "Yes Yes"
-          else
-            echo "No"
-          fi
       - name: Checkout Commit
         uses: actions/checkout@v3
       - name: Cache yarn dependencies
@@ -95,9 +83,16 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Vercel CLI
         run: yarn global add vercel@canary
+        
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Test
+        run: |
+          if ${{github.ref_name == 'main'}};then
+            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          fi
