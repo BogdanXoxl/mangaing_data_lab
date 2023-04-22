@@ -1,0 +1,7 @@
+query Station($filters: StationsFilterType) {
+  stations(filters: $filters) {
+    name
+    station_form
+    id
+  }
+}

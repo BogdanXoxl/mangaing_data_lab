@@ -1,4 +1,5 @@
-import { enumType, inputObjectType, list, nullable, queryField } from "nexus";
+import { enumType, inputObjectType, list, nonNull, nullable, queryField } from "nexus";
+import type { ValidationRules } from "nexus-validate/dist/rules";
 
 export const SortStationsField = enumType({
   name: "SortStationsField",
@@ -23,33 +24,41 @@ export const StationsFilterType = inputObjectType({
 });
 
 export const stationsQueryField = queryField("stations", {
-  type: list("Station"),
+  type: nonNull(list("Station")),
   args: {
     sort: nullable(StationsSortType),
     filters: nullable(StationsFilterType),
   },
-  validate: ({ string, number, object }) => ({
+  validate: ({ string, number, object }: ValidationRules) => ({
     sort: object({
       field: string().oneOf(["name", "station_form"]).nonNullable(),
       sort_direction: string()
         .optional()
         .nullable()
         .oneOf(["asc", "desc", null])
-        .transform((value, originalValue) => (originalValue === null ? "asc" : value)),
+        .transform((value?: string, originalValue?: string | null) =>
+          originalValue === null ? "asc" : value
+        ),
     }).nullable(),
     filters: object({
       id: number()
         .nullable()
         .default(undefined)
-        .transform((value, originalValue) => (originalValue === null ? undefined : value)),
+        .transform((value?: string, originalValue?: string | null) =>
+          originalValue === null ? undefined : value
+        ),
       name: string()
         .nullable()
         .default(undefined)
-        .transform((value, originalValue) => (originalValue === null ? undefined : value)),
+        .transform((value?: string, originalValue?: string | null) =>
+          originalValue === null ? undefined : value
+        ),
       station_form: string()
         .nullable()
         .default(undefined)
-        .transform((value, originalValue) => (originalValue === null ? undefined : value)),
+        .transform((value?: string, originalValue?: string | null) =>
+          originalValue === null ? undefined : value
+        ),
     }).nullable(),
   }),
   resolve: (_parent, args, ctx) => {

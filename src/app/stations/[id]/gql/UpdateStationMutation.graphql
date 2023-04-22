@@ -1,0 +1,5 @@
+mutation UpdateStation($id: Int!, $name: String!, $station_form: String!) {
+  updateStation(id: $id, name: $name, station_form: $station_form) {
+    id
+  }
+}

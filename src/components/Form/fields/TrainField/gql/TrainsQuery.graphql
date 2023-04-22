@@ -1,0 +1,5 @@
+query Trains {
+  trains {
+    id
+  }
+}

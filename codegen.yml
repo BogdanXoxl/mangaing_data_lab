@@ -1,0 +1,36 @@
+schema:
+  - "./generated/schema.graphql"
+documents:
+  - "src/**/*.tsx"
+  - "src/**/*.graphql"
+  - "src/**/*.gql"
+generates:
+  "generated/__generated__/gql-codegen/types.ts":
+    plugins:
+      - typescript
+      - typescript-validation-schema
+    config:
+      notAllowEmptyString: true
+      scalars:
+        Date: "string"
+  "app/":
+    preset: near-operation-file
+    presetConfig:
+      folder: __generated__
+      extension: .tsx
+      fileName: index
+      baseTypesPath: ../generated/__generated__/gql-codegen/types.ts
+    plugins:
+      - add:
+          content:
+            - "// NOTICE: __generated__ folders should be added to .gitignore"
+      - typescript-operations
+      - typed-document-node
+    config:
+      documentMode: "documentNodeImportFragments"
+      namingConvention: keep
+
+      omitOperationSuffix: true
+      dedupeOperationSuffix: true
+      immutableTypes: true
+      maybeValue: "T | undefined"

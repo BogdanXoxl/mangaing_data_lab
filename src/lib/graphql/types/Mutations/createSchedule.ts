@@ -1,4 +1,5 @@
 import { intArg, mutationField, nonNull } from "nexus";
+import type { ValidationRules } from "nexus-validate/dist/rules";
 
 export const createSchedule = mutationField("createSchedule", {
   type: "Schedule",
@@ -8,7 +9,7 @@ export const createSchedule = mutationField("createSchedule", {
     pause: nonNull(intArg()),
     duration: nonNull(intArg()),
   },
-  validate: ({ number }) => ({
+  validate: ({ number }: ValidationRules) => ({
     station_id: number().required(),
     train_id: number().required(),
     pause: number().required(),

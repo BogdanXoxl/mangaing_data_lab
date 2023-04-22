@@ -7,6 +7,6 @@ export const Schedule = objectType({
     t.int("pause");
     t.int("train_id");
     t.int("station_id");
-    t.date("duration");
+    t.int("duration");
   },
 });

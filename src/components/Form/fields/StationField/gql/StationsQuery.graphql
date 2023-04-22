@@ -1,0 +1,5 @@
+query Stations {
+  stations {
+    id
+  }
+}

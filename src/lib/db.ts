@@ -9,6 +9,3 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-// TODO:: add mantine
-// TODO:: add apollo server/client

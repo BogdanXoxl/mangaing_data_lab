@@ -1,4 +1,5 @@
 import { mutationField, nonNull, stringArg } from "nexus";
+import type { ValidationRules } from "nexus-validate/dist/rules";
 
 export const createStation = mutationField("createStation", {
   type: "Station",
@@ -6,7 +7,7 @@ export const createStation = mutationField("createStation", {
     name: nonNull(stringArg()),
     station_form: nonNull(stringArg()),
   },
-  validate: ({ string }) => ({
+  validate: ({ string }: ValidationRules) => ({
     name: string().required().trim(),
     station_form: string().required(),
   }),

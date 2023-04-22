@@ -1,0 +1,17 @@
+mutation UpdateSchedule(
+  $id: Int!
+  $station_id: Int!
+  $train_id: Int!
+  $pause: Int!
+  $duration: Int!
+) {
+  updateSchedule(
+    id: $id
+    station_id: $station_id
+    train_id: $train_id
+    pause: $pause
+    duration: $duration
+  ) {
+    id
+  }
+}

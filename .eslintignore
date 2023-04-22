@@ -1,5 +1,5 @@
 node_modules
 .husky
-out
 generated
 __generated__/
+**/*.js

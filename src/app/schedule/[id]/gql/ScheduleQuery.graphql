@@ -1,0 +1,9 @@
+query Schedule($filters: ScheduleFilterType) {
+  schedule(filters: $filters) {
+    id
+    pause
+    duration
+    train_id
+    station_id
+  }
+}
