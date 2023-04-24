@@ -14,7 +14,8 @@
     "codegen:clean": "rimraf '**/__generated__'",
     "prestart": "yarn codegen:clean && yarn codegen",
     "predev": "yarn codegen:clean && yarn codegen",
-    "prebuild": "yarn codegen:clean && yarn codegen"
+    "prebuild": "yarn codegen:clean && yarn codegen",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",
