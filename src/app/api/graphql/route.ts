@@ -14,7 +14,7 @@ const handler = startServerAndCreateNextHandler(server, {
   context: createContext,
 });
 // eslint-disable-next-line no-console
-console.log(process.env.VERCEL_URL);
+console.log("here>> ", process.env.NEXT_PUBLIC_VERCEL_URL);
 
 export async function GET(request: NextRequest) {
   return handler(request);
