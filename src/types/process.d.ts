@@ -1,5 +1,4 @@
 declare namespace NodeJS {
-  export interface ProcessEnv {
-    NEXT_PUBLIC_GQL_URL: string;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface ProcessEnv {}
 }
