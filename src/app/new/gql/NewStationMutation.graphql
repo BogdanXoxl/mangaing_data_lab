@@ -1,0 +1,7 @@
+mutation NewStationMutation($name: String!, $station_form: String!) {
+  createStation(name: $name, station_form: $station_form) {
+    id
+    name
+    station_form
+  }
+}

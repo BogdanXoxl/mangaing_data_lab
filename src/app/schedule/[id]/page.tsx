@@ -7,6 +7,7 @@ import { Form } from "@/components/Form";
 
 import { ScheduleDocument, UpdateScheduleDocument } from "./gql";
 
+// TODO:: sometimes error with prisma
 // TODO:: try use server component here
 // export const revalidate = 3600;
 
@@ -34,8 +35,6 @@ const EditSchedule = ({ params: { id } }: Props) => {
 
   if (typeof window !== "undefined" && !loading && !data?.schedule?.length) notFound();
 
-  // console.log(data, defaultValues);
-
   return (
     <div className="mt-5 flex h-full flex-col justify-center">
       <Form
@@ -43,7 +42,7 @@ const EditSchedule = ({ params: { id } }: Props) => {
         fields={["station_id", "train_id", "pause", "duration"]}
         mutation={UpdateScheduleDocument}
         defaultValues={defaultValues}
-        afterSubmit={() => router.push("/stations")}
+        afterSubmit={() => router.push("/schedule")}
       />
     </div>
   );
