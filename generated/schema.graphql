@@ -49,8 +49,8 @@ enum SortDirection {
 
 enum SortScheduleField {
   duration
-  id
   pause
+  station_id
   train_id
 }
 

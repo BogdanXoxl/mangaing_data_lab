@@ -32,5 +32,4 @@ generates:
 
       omitOperationSuffix: true
       dedupeOperationSuffix: true
-      immutableTypes: true
       maybeValue: "T | undefined"

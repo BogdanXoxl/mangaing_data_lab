@@ -1,0 +1,9 @@
+query ScheduleList($filters: ScheduleFilterType, $sort: ScheduleSortType) {
+  schedule(filters: $filters, sort: $sort) {
+    id
+    pause
+    duration
+    train_id
+    station_id
+  }
+}

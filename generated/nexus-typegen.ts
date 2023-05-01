@@ -52,7 +52,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   SortDirection: "asc" | "desc"
-  SortScheduleField: "duration" | "id" | "pause" | "train_id"
+  SortScheduleField: "duration" | "pause" | "station_id" | "train_id"
   SortStationsField: "name" | "station_form"
 }
 

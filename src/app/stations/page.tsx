@@ -1,88 +1,113 @@
 "use client";
 
-import Link from "next/link";
+import { useQuery } from "@apollo/client";
+import type { SortingState } from "@tanstack/react-table";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const mockData = [
-  { id: 1, train_id: 1, station_id: 1, pause: 1, duration: 1 },
-  { id: 2, train_id: 1, station_id: 1, pause: 1, duration: 1 },
-  { id: 3, train_id: 1, station_id: 1, pause: 1, duration: 1 },
-  { id: 4, train_id: 1, station_id: 1, pause: 1, duration: 1 },
-  { id: 5, train_id: 1, station_id: 1, pause: 1, duration: 1 },
-  { id: 6, train_id: 1, station_id: 1, pause: 1, duration: 1 },
-  { id: 7, train_id: 1, station_id: 1, pause: 1, duration: 1 },
+import type { ArrayElement } from "@/types/ArrayElement";
+
+import type { SortStationsField } from "../../../generated/__generated__/gql-codegen/types";
+import { SortDirection } from "../../../generated/__generated__/gql-codegen/types";
+import type { StationsList } from "./gql";
+import { StationsListDocument } from "./gql";
+
+type StationsType = ArrayElement<StationsList["stations"]>;
+
+const columnHelper = createColumnHelper<StationsType>();
+
+const columns = [
+  columnHelper.accessor((row) => row?.name, {
+    id: "name",
+    header: "Наименование станции",
+  }),
+  columnHelper.accessor((row) => row?.station_form, {
+    id: "station_form",
+    header: "Форма станции",
+  }),
 ];
 
 const StationsPage = () => {
-  const data = mockData;
+  const router = useRouter();
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const { data, refetch } = useQuery(StationsListDocument);
+
+  useEffect(() => {
+    refetch(
+      sorting.length
+        ? {
+            sort: {
+              sort_direction: sorting?.at(0)?.desc ? SortDirection.Desc : SortDirection.Asc,
+              field: sorting?.at(0)?.id as SortStationsField,
+            },
+          }
+        : {}
+    );
+  }, [refetch, sorting]);
+
+  const table = useReactTable({
+    data: data?.stations || [],
+    columns,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
-    <div>
-      <h1>Станции</h1>
-      <div className="flex h-full flex-col justify-center">
-        <div className="mx-auto w-full max-w-2xl rounded-sm border border-gray-200 bg-white shadow-lg">
-          <header className="border-b border-gray-100 px-5 py-4">
-            <div className="font-semibold text-gray-800">Расписание</div>
-          </header>
+    <div className="my-4 flex h-full flex-col justify-center">
+      <div className="mx-auto w-full max-w-2xl rounded-sm border border-gray-200 bg-white shadow-lg">
+        <header className="border-b border-gray-100 px-5 py-4">
+          <div className="font-semibold text-gray-800">Станции</div>
+        </header>
 
-          <div className="overflow-x-auto p-3">
-            <table className="w-full table-auto">
-              <thead className="bg-gray-50 text-xs font-semibold uppercase text-gray-400 ">
-                <tr>
-                  <th className="p-2">
-                    <div className="text-left font-semibold">Код станции</div>
-                  </th>
-                  <th className="p-2">
-                    <div className="text-left font-semibold">Номер поезда</div>
-                  </th>
-                  <th className="p-2">
-                    <div className="text-left font-semibold">Стоянка</div>
-                  </th>
-                  <th className="p-2">
-                    <div className="text-center font-semibold">Время в пути</div>
-                  </th>
-                  <th aria-label="action" className="p-2" />
-                </tr>
-              </thead>
-
-              <tbody className="divide-y divide-gray-100 text-sm">
-                {data.map((d) => (
-                  <tr key={d.id} className="hover:bg-primary/50 ">
-                    <td className="p-2">
-                      <Link className="font-medium text-default" href={`/stations/${d.id}`}>
-                        {d.station_id}
-                      </Link>
-                    </td>
-                    <td className="p-2">
-                      <div className="text-left text-default">{d.train_id}</div>
-                    </td>
-                    <td className="p-2">
-                      <div className="text-left font-medium text-green-500">{d.pause} мин</div>
-                    </td>
-                    <td className="p-2 text-default">{d.duration}</td>
-                    <td className="p-2">
-                      <div className="flex justify-center">
-                        <button type="button">
-                          <svg
-                            className="h-8 w-8 rounded-full p-1 hover:bg-gray-100 hover:text-blue-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
-                        </button>
+        <div className="overflow-x-auto p-3">
+          <table className="w-full table-auto">
+            <thead className="bg-gray-50 text-xs font-semibold uppercase text-gray-400">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} className="p-2">
+                      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+                      <div
+                        className={`text-left font-semibold ${
+                          header.column.getCanSort() ? "cursor-pointer select-none" : ""
+                        }`}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          asc: " 🔼",
+                          desc: " 🔽",
+                        }[header.column.getIsSorted() as string] ?? null}
                       </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="divide-y divide-gray-100 text-sm">
+              {table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="hover:bg-primary/50"
+                  onClick={() => router.push(`stations/${row.original?.id}`)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="p-2">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

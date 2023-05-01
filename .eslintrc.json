@@ -35,6 +35,7 @@
     "simple-import-sort/exports": "error",
     "unused-imports/no-unused-imports": "warn",
     "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": "off",
@@ -81,12 +82,6 @@
         "required": {
           "some": ["nesting", "id"]
         }
-      }
-    ],
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": true
       }
     ],
     "@next/next/no-html-link-for-pages": ["error", "src/app"],

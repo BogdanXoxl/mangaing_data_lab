@@ -1,0 +1,7 @@
+query StationsList($sort: StationsSortType, $filters: StationsFilterType) {
+  stations(sort: $sort, filters: $filters) {
+    id
+    name
+    station_form
+  }
+}

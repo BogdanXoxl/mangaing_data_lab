@@ -8,7 +8,7 @@ export const SortDirection = enumType({
 
 export const SortScheduleField = enumType({
   name: "SortScheduleField",
-  members: ["id", "train_id", "pause", "duration"],
+  members: ["station_id", "train_id", "pause", "duration"],
 });
 
 export const ScheduleSortType = inputObjectType({
@@ -37,7 +37,7 @@ export const scheduleQueryField = queryField("schedule", {
   },
   validate: ({ string, number, object }: ValidationRules) => ({
     sort: object({
-      field: string().oneOf(["id", "train_id", "pause", "duration"]).nonNullable(),
+      field: string().oneOf(["station_id", "train_id", "pause", "duration"]).nonNullable(),
       sort_direction: string()
         .optional()
         .nullable()

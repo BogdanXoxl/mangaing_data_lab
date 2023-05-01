@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 
 import { Form } from "@/components/Form";
 
@@ -15,6 +15,7 @@ type Props = {
 };
 
 const EditStation = ({ params: { id } }: Props) => {
+  const router = useRouter();
   const { data, loading } = useQuery(StationDocument, {
     variables: {
       filters: {
@@ -38,6 +39,7 @@ const EditStation = ({ params: { id } }: Props) => {
         fields={["name", "station_form"]}
         mutation={UpdateStationDocument}
         defaultValues={defaultValues}
+        afterSubmit={() => router.push("/stations")}
       />
     </div>
   );

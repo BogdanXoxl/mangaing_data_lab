@@ -16,6 +16,7 @@ type Props = {
   fields: Fields;
   mutation: DocumentNode;
   refetchQueries: string[] | { query: DocumentNode }[];
+  afterSubmit?: () => void;
   defaultValues?: {
     id?: number;
     name?: string;
@@ -27,7 +28,7 @@ type Props = {
   };
 };
 
-const Form = ({ fields, defaultValues, mutation, refetchQueries }: Props) => {
+const Form = ({ fields, defaultValues, mutation, refetchQueries, afterSubmit }: Props) => {
   const {
     register,
     handleSubmit,
@@ -48,6 +49,8 @@ const Form = ({ fields, defaultValues, mutation, refetchQueries }: Props) => {
     if (!error) {
       reset();
     }
+
+    afterSubmit?.();
   };
 
   // console.log(errors, error);
